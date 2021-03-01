@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeVideo.Net.Services", "HomeVideo.Net.Services\HomeVideo.Net.Services.csproj", "{53ABDBC7-BA3A-435B-916C-CC756E2CCE0B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeVideo.Net.Domain", "HomeVideo.Net.Domain\HomeVideo.Net.Domain.csproj", "{167D8D9D-49D0-4B86-A7E2-6E63202A7A78}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeVideo.Net.Indexing", "HomeVideo.Net.Indexing\HomeVideo.Net.Indexing.csproj", "{77335153-8043-4BDB-B29A-59AD0FC8CDEA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeVideo.Net.Logging", "HomeVideo.Net.Logging\HomeVideo.Net.Logging.csproj", "{BA4CF201-9DA5-43F1-96C4-E385E99680CE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeVideo.Net.Host", "HomeVideo.Net.Host\HomeVideo.Net.Host\HomeVideo.Net.Host.csproj", "{46E6E60C-E650-4508-8A4C-D47CAFFB6203}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeVideo.Net.UnitTests", "HomeVideo.Net.UnitTests\HomeVideo.Net.UnitTests.csproj", "{DACFADD9-B3CD-48A4-8C7B-588E3211E0AE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53ABDBC7-BA3A-435B-916C-CC756E2CCE0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53ABDBC7-BA3A-435B-916C-CC756E2CCE0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53ABDBC7-BA3A-435B-916C-CC756E2CCE0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53ABDBC7-BA3A-435B-916C-CC756E2CCE0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{167D8D9D-49D0-4B86-A7E2-6E63202A7A78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{167D8D9D-49D0-4B86-A7E2-6E63202A7A78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{167D8D9D-49D0-4B86-A7E2-6E63202A7A78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{167D8D9D-49D0-4B86-A7E2-6E63202A7A78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77335153-8043-4BDB-B29A-59AD0FC8CDEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77335153-8043-4BDB-B29A-59AD0FC8CDEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77335153-8043-4BDB-B29A-59AD0FC8CDEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77335153-8043-4BDB-B29A-59AD0FC8CDEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA4CF201-9DA5-43F1-96C4-E385E99680CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA4CF201-9DA5-43F1-96C4-E385E99680CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA4CF201-9DA5-43F1-96C4-E385E99680CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA4CF201-9DA5-43F1-96C4-E385E99680CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46E6E60C-E650-4508-8A4C-D47CAFFB6203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46E6E60C-E650-4508-8A4C-D47CAFFB6203}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46E6E60C-E650-4508-8A4C-D47CAFFB6203}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46E6E60C-E650-4508-8A4C-D47CAFFB6203}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DACFADD9-B3CD-48A4-8C7B-588E3211E0AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DACFADD9-B3CD-48A4-8C7B-588E3211E0AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DACFADD9-B3CD-48A4-8C7B-588E3211E0AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DACFADD9-B3CD-48A4-8C7B-588E3211E0AE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6BC1D5C0-AE8E-4E8B-8EBF-C14343D25E52}
+	EndGlobalSection
+EndGlobal
