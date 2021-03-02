@@ -8,9 +8,9 @@ namespace HomeVideo.Net.Services.Contracts
 {
     public interface IDatabaseService
     {
-        bool SaveEntry<T>(T dataObject);
+        bool SaveEntry<T>(T entry, bool overwrite);
         T GetEntry<T>(Guid id);
         List<T> GetEntries<T>(string searchPattern);
-        bool DeleteEntry(Guid id);
+        bool DeleteEntry<T>(Guid id);
     }
 }
