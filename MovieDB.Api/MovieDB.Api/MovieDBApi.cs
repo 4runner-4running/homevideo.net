@@ -115,17 +115,44 @@ namespace MovieDB.Api
                 throw new HttpRequestException($"Error requesting search data. Status: {response.StatusCode}", null, response.StatusCode);
             }
         }
+
+        /// <summary>
+        /// Get a tv show data object based on internal id
+        /// </summary>
+        /// <param name="id">Tv show id</param>
+        /// <returns></returns>
+        public async Task<TvApiDTO> GetTvShow(int id)
+        {
+            // Format: https://api.themoviedb.org/3/tv/{tv_id}?api_key=<<api_key>>&language=en-US
+            var urlRequest = HttpUtility.UrlEncode($"{ApiConstants.Tv}{id}?{ApiConstants.ApiKey}{_apiKey}&{ApiConstants.Lang}", Encoding.UTF8);
+
+            // Request
+            var response = await _client.GetAsync(urlRequest);
+
+            // Handle success/failure
+            if (ParseStatusCodeForPassFail(response.StatusCode))
+            {
+                var stringContent = await response.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<TvApiDTO>(stringContent);
+            }
+            else
+            {
+                throw new HttpRequestException($"Error requeasting movie title. Status: {response.StatusCode}", null, response.StatusCode);
+            }
+        }
         #endregion
 
         #region Helpers
         public bool ParseStatusCodeForPassFail(HttpStatusCode status)
         {
+            // The moviedb.org api returns either 200, 401, or 404
             switch (status)
             {
                 case HttpStatusCode.OK:
-                case HttpStatusCode.Created:
-                case HttpStatusCode.Accepted:
                     return true;
+                case HttpStatusCode.Unauthorized:
+                case HttpStatusCode.NotFound:
                 default:
                     return false;
             }
