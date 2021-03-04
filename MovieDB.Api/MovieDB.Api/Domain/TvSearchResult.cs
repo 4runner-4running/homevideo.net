@@ -16,7 +16,7 @@ namespace MovieDB.Api.Domain
         public int Id { get; set; }
         public string Backdrop_Path { get; set; }
         public decimal Vote_Average { get; set; }
-        public DateTime First_Air_Date { get; set; }
+        public DateTime? First_Air_Date { get; set; }
         public string[] Origin_Country { get; set; }
         public string[] Genre_Ids { get; set; }
         public string Original_Language { get; set; }

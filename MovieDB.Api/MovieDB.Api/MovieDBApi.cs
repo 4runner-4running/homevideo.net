@@ -110,7 +110,7 @@ namespace MovieDB.Api
         public async Task<TvSearchApiResponse> SearchForTv(string title)
         {
             // Format: https://api.themoviedb.org/3/search/tv?api_key=<<api_key>>&query=<<query_string>>&language=en-US&page=1&include_adult=false
-            var urlRequest = $"{ApiConstants.Search}{ApiConstants.Tv}/?{ApiConstants.ApiKey}{_apiKey}&{ApiConstants.Lang}&{ApiConstants.Query}{HttpUtility.UrlEncode(title, Encoding.UTF8)}&{ApiConstants.DefaultSearchProps}";
+            var urlRequest = $"{ApiConstants.Search}{ApiConstants.Tv}?{ApiConstants.ApiKey}{_apiKey}&{ApiConstants.Lang}&{ApiConstants.Query}{HttpUtility.UrlEncode(title, Encoding.UTF8)}&{ApiConstants.DefaultSearchProps}";
 
             // Request
             var response = await _client.GetAsync(urlRequest);
