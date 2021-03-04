@@ -17,18 +17,31 @@ namespace MovieDB.Api
     /// </summary>
     public class MovieDBApi
     {
-        private const string _url = "https://api.themoviedb.org/3/";
-        private const string _apiKey = ""; // TODO: look into storing this elsewhere
+        private string _url = "https://api.themoviedb.org/3/";
+        private string _apiKey = ""; // TODO: look into storing this elsewhere
 
         private HttpClient _client;
 
-        public MovieDBApi()
+        public MovieDBApi(string key, string url = null)
         {
+            _apiKey = key;
+            _url = !String.IsNullOrEmpty(url) ? url : _url;
+
             _client = new HttpClient();
             _client.BaseAddress = new Uri(_url);
             // Set any needed headers authorizations etc. here
             // Add request header to accept json
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        }
+
+        public async Task<bool> GetConfiguration()
+        {
+            // https://api.themoviedb.org/3/configuration?api_key=<<api_key>>
+            var urlRequest = $"{ApiConstants.Configuration}?{ApiConstants.ApiKey}{_apiKey}";
+
+            var response = await _client.GetAsync(urlRequest);
+
+            return true;
         }
 
         #region Movie Requests
@@ -42,7 +55,7 @@ namespace MovieDB.Api
             // Build out request url, most be properly encoded
             // Format: https://api.themoviedb.org/3/search/movie?api_key=<<api-key>>&language=en-us&query=<<query_string>>&language=en-US&page=1&include_adult=false
             // For my purposes &page=1&include_adult=false will always be set at the end of the query (ApiConstants.DefaultSearchProps), no need to peruse adult titles, and will always want the best matches from page 1
-            var urlRequest = HttpUtility.UrlEncode($"{ApiConstants.Search}{ApiConstants.Movie}?{ApiConstants.ApiKey}{_apiKey}&{ApiConstants.Query}{title}&{ApiConstants.DefaultSearchProps}", Encoding.UTF8);
+            var urlRequest = $"{ApiConstants.Search}{ApiConstants.Movie}?{ApiConstants.ApiKey}{_apiKey}&{ApiConstants.Lang}&{ApiConstants.Query}{HttpUtility.UrlEncode(title, Encoding.UTF8)}&{ApiConstants.DefaultSearchProps}";
 
             // Make request
             var response = await _client.GetAsync(urlRequest);
@@ -69,7 +82,7 @@ namespace MovieDB.Api
         public async Task<MovieApiDTO> GetMovie(int id)
         {
             // Format: https://api.themoviedb.org/3/movie/<<id>>?api_key=<<api_key>>&language=en-US
-            var urlRequest = HttpUtility.UrlEncode($"{ApiConstants.Movie}{id}?{ApiConstants.ApiKey}{_apiKey}&{ApiConstants.Lang}", Encoding.UTF8);
+            var urlRequest = $"{ApiConstants.Movie}/{id}?{ApiConstants.ApiKey}{_apiKey}&{ApiConstants.Lang}";
 
             // Request
             var response = await _client.GetAsync(urlRequest);
@@ -83,7 +96,7 @@ namespace MovieDB.Api
             }
             else
             {
-                throw new HttpRequestException($"Error requeasting movie title. Status: {response.StatusCode}", null, response.StatusCode);
+                throw new HttpRequestException($"Error requesting movie title. Status: {response.StatusCode}", null, response.StatusCode);
             }
         }
         #endregion
@@ -97,7 +110,7 @@ namespace MovieDB.Api
         public async Task<TvSearchApiResponse> SearchForTv(string title)
         {
             // Format: https://api.themoviedb.org/3/search/tv?api_key=<<api_key>>&query=<<query_string>>&language=en-US&page=1&include_adult=false
-            var urlRequest = HttpUtility.UrlEncode($"{ApiConstants.Search}{ApiConstants.Tv}?{ApiConstants.ApiKey}{_apiKey}&{ApiConstants.Query}{title}&{ApiConstants.DefaultSearchProps}", Encoding.UTF8);
+            var urlRequest = $"{ApiConstants.Search}{ApiConstants.Tv}/?{ApiConstants.ApiKey}{_apiKey}&{ApiConstants.Lang}&{ApiConstants.Query}{HttpUtility.UrlEncode(title, Encoding.UTF8)}&{ApiConstants.DefaultSearchProps}";
 
             // Request
             var response = await _client.GetAsync(urlRequest);
@@ -124,7 +137,7 @@ namespace MovieDB.Api
         public async Task<TvApiDTO> GetTvShow(int id)
         {
             // Format: https://api.themoviedb.org/3/tv/{tv_id}?api_key=<<api_key>>&language=en-US
-            var urlRequest = HttpUtility.UrlEncode($"{ApiConstants.Tv}{id}?{ApiConstants.ApiKey}{_apiKey}&{ApiConstants.Lang}", Encoding.UTF8);
+            var urlRequest = $"{ApiConstants.Tv}/{id}?{ApiConstants.ApiKey}{_apiKey}&{ApiConstants.Lang}";
 
             // Request
             var response = await _client.GetAsync(urlRequest);
@@ -138,7 +151,7 @@ namespace MovieDB.Api
             }
             else
             {
-                throw new HttpRequestException($"Error requeasting movie title. Status: {response.StatusCode}", null, response.StatusCode);
+                throw new HttpRequestException($"Error requesting movie title. Status: {response.StatusCode}", null, response.StatusCode);
             }
         }
         #endregion
