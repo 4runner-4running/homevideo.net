@@ -28,7 +28,7 @@ namespace HomeVideo.Net.Indexing
         /// <param name="name">The library name of the indexer</param>
         /// <param name="path">The root file path for the indexer to search</param>
         /// <param name="id"></param>
-        public MovieIndexer(ILogger logger, string name, string path, Guid id = new Guid()) //IStorageService db
+        public MovieIndexer(ILogger logger,  string name, string path, Guid id = new Guid()) //IStorageService db
         {
             Id = id != Guid.Empty ? id : Guid.NewGuid();
 
@@ -107,5 +107,15 @@ namespace HomeVideo.Net.Indexing
          *  create db entry
          *  TODO: break data object up into tables?
          */
+
+        /// <summary>
+        /// Retrieve movie data from the movie db api service
+        /// </summary>
+        /// <param name="file">File path containing the movie name</param>
+        /// <returns></returns>
+        private Task<bool> FetchOnlineData(string file)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
