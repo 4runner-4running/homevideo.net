@@ -28,7 +28,7 @@ namespace HomeVideo.Net.Indexing
         /// <param name="name">The library name of the indexer</param>
         /// <param name="path">The root file path for the indexer to search</param>
         /// <param name="id"></param>
-        public MovieIndexer(ILogger logger,  string name, string path, Guid id = new Guid()) //IStorageService db
+        public MovieIndexer(ILogger logger, string name, string path, Guid id = new Guid()) //IStorageService db
         {
             Id = id != Guid.Empty ? id : Guid.NewGuid();
 

@@ -9,6 +9,7 @@ namespace HomeVideo.Net.Domain.Contracts
     public interface ISeasonData
     {
         Guid Id { get; set; }
+        int MovieDbId { get; set; }
         string DisplayName { get; set; }
         int EpisodeCount { get; set; }
         string MetadataDescription { get; set; }

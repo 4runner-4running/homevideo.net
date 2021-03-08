@@ -10,6 +10,8 @@ namespace HomeVideo.Net.Domain.DataObjects
     public class MovieData : IMovieData
     {
         public Guid Id { get; set; }
+        public int MovieDbId { get; set; }
+        public DateTime ReleaseDate { get; set; }
         public string DisplayName { get; set; }
         public string FileName {get;set;}
         public string Path {get;set;}

@@ -12,9 +12,9 @@ namespace HomeVideo.Net.Services.Contracts
     /// </summary>
     public interface IMetadataService
     {
-        IMovieData GetMovieByTitle(string title);
-        IMovieData GetMovieById(int id);
-        ITvData GetTvByTitle(string title);
-        ITvData GetTvById(int id);
+        Task<IMovieData> GetMovieByTitle(string title);
+        Task<IMovieData> GetMovieById(int id);
+        Task<ITvData> GetTvByTitle(string title);
+        Task<ITvData> GetTvById(int id);
     }
 }

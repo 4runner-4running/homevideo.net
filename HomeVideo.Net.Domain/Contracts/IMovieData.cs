@@ -12,6 +12,8 @@ namespace HomeVideo.Net.Domain.Contracts
     public interface IMovieData
     {
         Guid Id { get; set; }
+        int MovieDbId { get; set; }
+        DateTime ReleaseDate { get; set; }
         string DisplayName { get; set; }
         string FileName { get; set; }
         string Path { get; set; }
