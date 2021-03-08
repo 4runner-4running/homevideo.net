@@ -154,6 +154,57 @@ namespace MovieDB.Api
                 throw new HttpRequestException($"Error requesting movie title. Status: {response.StatusCode}", null, response.StatusCode);
             }
         }
+
+        /// <summary>
+        /// Get a season's data based on internal id
+        /// </summary>
+        /// <param name="showId">Identifier for the tv show</param>
+        /// <param name="seasonNumber">Identifier for the season</param>
+        /// <returns></returns>
+        public async Task<SeasonApiDTO> GetSeason(int showId, int seasonNumber)
+        {
+            // Format: https://api.themoviedb.org/3/tv/{tv_id}/season/{season_number}?api_key=<<api_key>>&language=en-US
+            var urlRequest = $"{ApiConstants.Tv}/{showId}/{ApiConstants.Season}/{seasonNumber}?{ApiConstants.ApiKey}{_apiKey}&{ApiConstants.Lang}";
+
+            // Request
+            var response = await _client.GetAsync(urlRequest);
+
+            // Handle success/failure
+            if (ParseStatusCodeForPassFail(response.StatusCode))
+            {
+                var stringContent = await response.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<SeasonApiDTO>(stringContent);
+            }
+
+            throw new HttpRequestException($"Error requesating season: {seasonNumber} from show: {showId}. Status: {response.StatusCode}", null, response.StatusCode);
+        }
+
+        /// <summary>
+        /// Get an episode's data based on internal id
+        /// </summary>
+        /// <param name="showId">Identifier for the tv show</param>
+        /// <param name="seasonNumber">Identifier for the season</param>
+        /// <param name="episodeNumber">Identifier for the episode</param>
+        /// <returns></returns>
+        public async Task<EpisodeApiDTO> GetEpisode(int showId, int seasonNumber, int episodeNumber)
+        {
+            // Format: https://api.themoviedb.org/3/tv/{tv_id}/season/{season_number}/episode/{episode_number}?api_key=<<api_key>>&language=en-US
+            var urlRequest = $"{ApiConstants.Tv}/{showId}/{ApiConstants.Season}/{seasonNumber}/{ApiConstants.Episode}/{episodeNumber}?{ApiConstants.ApiKey}{_apiKey}&{ApiConstants.Lang}";
+
+            // Request
+            var response = await _client.GetAsync(urlRequest);
+
+            // Handle success/failure
+            if (ParseStatusCodeForPassFail(response.StatusCode))
+            {
+                var stringContent = await response.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<EpisodeApiDTO>(stringContent);
+            }
+
+            throw new HttpRequestException($"Error requesting tv episode: {episodeNumber} from season {seasonNumber} on show: {showId}. Status: {response.StatusCode}", null, response.StatusCode);
+        }
         #endregion
 
         #region Helpers
