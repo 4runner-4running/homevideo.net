@@ -7,6 +7,7 @@ namespace HomeVideo.Net.Indexing
 {
     /// <summary>
     /// Indexer Factory is responsible for managing indexers for various libraries
+    /// Should indexers stay 'live' like this, or merely be config entries to spin up?
     /// </summary>
     public class IndexerFactory
     {

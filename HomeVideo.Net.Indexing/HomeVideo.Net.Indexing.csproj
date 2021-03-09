@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\HomeVideo.Net.Domain\HomeVideo.Net.Domain.csproj" />
     <ProjectReference Include="..\HomeVideo.Net.Logging\HomeVideo.Net.Logging.csproj" />
+    <ProjectReference Include="..\HomeVideo.Net.Services\HomeVideo.Net.Services.csproj" />
   </ItemGroup>
 
 </Project>

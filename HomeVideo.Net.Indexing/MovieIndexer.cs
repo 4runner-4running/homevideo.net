@@ -1,7 +1,10 @@
-﻿using HomeVideo.Net.Domain.Enum;
+﻿using HomeVideo.Net.Domain.Contracts;
+using HomeVideo.Net.Domain.DataObjects;
+using HomeVideo.Net.Domain.Enum;
 using HomeVideo.Net.Indexing.Contracts;
 using HomeVideo.Net.Indexing.Domain;
 using HomeVideo.Net.Logging.Contracts;
+using HomeVideo.Net.Services.Contracts;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,27 +20,29 @@ namespace HomeVideo.Net.Indexing
         public Guid Id { get; private set; }
         public string LibraryName { get; set; }
         public LibraryType Type { get; set; }
-        public string Path { get; set; }
+        public string RootPath { get; set; }
 
         //private IStorageService _db { get; set; }
         private ILogger _logger;
-
+        private IMetadataService _mdService;
+        private IDatabaseService _storageService;
         /// <summary>
         /// Movie Indexer is responsible for movie libraries. It will expect one media file per folder
         /// </summary>
         /// <param name="name">The library name of the indexer</param>
         /// <param name="path">The root file path for the indexer to search</param>
         /// <param name="id"></param>
-        public MovieIndexer(ILogger logger, string name, string path, Guid id = new Guid()) //IStorageService db
+        public MovieIndexer(ILogger logger, IMetadataService metadataService, IDatabaseService dbService, string name, string path, Guid id = new Guid()) //IStorageService db
         {
             Id = id != Guid.Empty ? id : Guid.NewGuid();
 
             Type = LibraryType.Movies;
 
             LibraryName = name;
-            Path = path;
+            RootPath = path;
             _logger = logger;
-            //_db = db;
+            _mdService = metadataService;
+            _storageService = dbService;
         }
 
         public async Task<IndexResult> Index()
@@ -113,9 +118,20 @@ namespace HomeVideo.Net.Indexing
         /// </summary>
         /// <param name="file">File path containing the movie name</param>
         /// <returns></returns>
-        private Task<bool> FetchOnlineData(string file)
+        private async Task<MovieData> FetchMetadata(string file)
         {
-            throw new NotImplementedException();
+            string title = FileUtility.FormatFileNameForSearch(Path.GetFileNameWithoutExtension(file));
+
+            MovieData dataResponse = (MovieData) await _mdService.GetMovieByTitle(title);
+            //Get movie poster to store as byte array
+            return dataResponse;
+            /*
+             *  Id = Guid.NewGuid(),
+                MovieDbId = dto.Id,
+                DisplayName = dto.Original_Title,
+                MetadataDescription = dto.Overview,
+                ReleaseDate = dto.Release_Date
+             */
         }
     }
 }
