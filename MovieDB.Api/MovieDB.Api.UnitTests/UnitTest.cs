@@ -8,7 +8,7 @@ namespace MovieDB.Api.UnitTests
     public class UnitTest
     {
         private string _testUrl = "";
-        private string _testKey = "01440bbed273601848b2bcebe48cc465";
+        private string _testKey = "";
 
         [TestMethod]
         public void Test_GetConfig()
