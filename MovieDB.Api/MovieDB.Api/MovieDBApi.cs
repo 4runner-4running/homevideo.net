@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -18,9 +19,11 @@ namespace MovieDB.Api
     public class MovieDBApi
     {
         private string _url = "https://api.themoviedb.org/3/";
+        private string _imageUrl = @"http://image.tmdb.org/t/p/";
         private string _apiKey = ""; // TODO: look into storing this elsewhere
 
         private HttpClient _client;
+        private HttpClient _imageClient;
 
         public MovieDBApi(string key, string url = null)
         {
@@ -32,6 +35,11 @@ namespace MovieDB.Api
             // Set any needed headers authorizations etc. here
             // Add request header to accept json
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            // Set image url client
+            _imageClient = new HttpClient();
+            _imageClient.BaseAddress = new Uri(_imageUrl);
+            _imageClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         public async Task<bool> GetConfiguration()
@@ -97,6 +105,25 @@ namespace MovieDB.Api
             else
             {
                 throw new HttpRequestException($"Error requesting movie title. Status: {response.StatusCode}", null, response.StatusCode);
+            }
+        }
+
+        public async Task<Stream> GetMovieImage(string imagePath, bool getAsThumbnail = false)
+        {
+            // Format: http://image.tmdb.org/t/p/original/vuifSABRpSnxCAOxEnWpNbZSXpp.jpg
+            var urlRequest = getAsThumbnail ? $"{ApiConstants.W185}/{imagePath.TrimStart('/')}" : $"{ApiConstants.Original}/{imagePath.TrimStart('/')}";
+
+            // Request
+            var response = await _imageClient.GetAsync(urlRequest);
+
+            // Handle success/failure
+            if (ParseStatusCodeForPassFail(response.StatusCode))
+            {
+                return await response.Content.ReadAsStreamAsync();
+            }
+            else
+            {
+                throw new HttpRequestException($"Error requesting movie images. Status: {response.StatusCode}", null, response.StatusCode);
             }
         }
         #endregion

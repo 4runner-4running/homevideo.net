@@ -22,5 +22,8 @@ namespace MovieDB.Api
         public static string Query = "query=";
         public static string DefaultSearchProps = "page=1&include_adult=false";
         public static string Configuration = "configuration";
+        public static string Images = "images";
+        public static string Original = "original";
+        public static string W185 = "w185";
     }
 }

@@ -1,5 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 
 namespace MovieDB.Api.UnitTests
@@ -9,6 +11,7 @@ namespace MovieDB.Api.UnitTests
     {
         private string _testUrl = "";
         private string _testKey = "01440bbed273601848b2bcebe48cc465";
+        private string _test_output_path = @"..\..\..\TestOutput";
 
         [TestMethod]
         public void Test_GetConfig()
@@ -53,6 +56,100 @@ namespace MovieDB.Api.UnitTests
             // Assert
             Assert.IsNotNull(detail, "Expected non null result");
             Assert.IsTrue(detail.Genres.Length > 0, "Expected non 0 Genre collection");
+        }
+
+        [TestMethod]
+        public void Test_GetMovieImage()
+        {
+            // Arrange
+            var api = new MovieDBApi(_testKey);
+            var title = "/vuifSABRpSnxCAOxEnWpNbZSXpp.jpg";
+
+            // Act
+            Stream stream = api.GetMovieImage(title).GetAwaiter().GetResult();
+
+            // Assert
+            Assert.IsTrue(stream.Length > 0);
+
+            //Cleanup
+            stream.Dispose();
+        }
+
+        [TestMethod]
+        public void Test_GetMovieImageIsValidImage()
+        {
+            // Arrange
+            var api = new MovieDBApi(_testKey);
+            var title = "/vuifSABRpSnxCAOxEnWpNbZSXpp.jpg";
+            var imageSaved = false;
+            Exception ex = null;
+            Image img = null;
+
+            // Act
+            var stream = api.GetMovieImage(title).GetAwaiter().GetResult();
+
+            // Try to make Image and save
+            try
+            {
+                img = Image.FromStream(stream);
+                stream.Position = 0;
+                img.Save($@"..\..\..\TestOutput{title}");
+                imageSaved = true;
+            }
+            catch (Exception x)
+            {
+                ex = x;
+                img?.Dispose();
+                stream?.Dispose();
+            }
+
+            // Assert
+            Assert.IsTrue(imageSaved);
+            Assert.IsNull(ex);
+            Assert.IsNotNull(img);
+            Assert.IsTrue(img.Width > 0);
+            Assert.IsTrue(img.Height > 0);
+            Assert.IsTrue(File.Exists($"{_test_output_path}{title}"));
+
+            // Cleanup
+            img?.Dispose();
+            stream?.Dispose();
+            if (File.Exists($"{_test_output_path}{title}"))
+                File.Delete($"{_test_output_path}{title}");
+        }
+
+        [TestMethod]
+        public void Test_GetMovieImageAsThumbnail()
+        {
+            // Arrange
+            var api = new MovieDBApi(_testKey);
+            var imagePath = "/vuifSABRpSnxCAOxEnWpNbZSXpp.jpg";
+            Image img = null;
+            Exception ex = null;
+
+            // Act
+            var stream = api.GetMovieImage(imagePath, true).GetAwaiter().GetResult();
+            try
+            {
+                img = Image.FromStream(stream);
+            }
+            catch (Exception x) 
+            {
+                ex = x;
+                if (img != null)
+                    img.Dispose();
+
+                if (stream != null)
+                    stream.Dispose();
+            }
+
+            // Assert
+            Assert.IsTrue(img.Width == 185);
+            Assert.IsNull(ex);
+
+            // Cleanup
+            img?.Dispose();
+            stream?.Dispose();
         }
 
         [TestMethod]
