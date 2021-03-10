@@ -6,6 +6,7 @@ using HomeVideo.Net.Indexing.Domain;
 using HomeVideo.Net.Logging.Contracts;
 using HomeVideo.Net.Services.Contracts;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -48,7 +49,26 @@ namespace HomeVideo.Net.Indexing
         public async Task<IndexResult> Index()
         {
             DateTime start = DateTime.Now;
+            var movieDataList = new ConcurrentBag<MovieData>();//new List<MovieData>();
+
+            // Search RootPath for files
             List<string> files = GetFilesList().ToList();
+
+            // Iterate through and fetch metadata from 
+            // How will the api react to this
+            // Too many requests at once could end up with a throttle...
+            var result = Parallel.ForEach(files, new ParallelOptions { MaxDegreeOfParallelism = 8 }, async (file) =>
+             {
+                 var movieData = await FetchMetadata(file);
+                 movieDataList.Add(movieData);
+             });
+
+
+            foreach (var movie in movieDataList)
+            {
+                _storageService.SaveEntry<MovieData>(movie, true);
+            }
+
             DateTime stop = DateTime.Now;
 
             return new IndexResult()
@@ -87,7 +107,7 @@ namespace HomeVideo.Net.Indexing
 
                 try
                 {
-                    temp.AddRange(Directory.GetFiles(Path, pattern, SearchOption.AllDirectories));
+                    temp.AddRange(Directory.GetFiles(RootPath, pattern, SearchOption.AllDirectories));
                 }
                 catch (UnauthorizedAccessException ex)
                 {
@@ -115,6 +135,7 @@ namespace HomeVideo.Net.Indexing
 
         /// <summary>
         /// Retrieve movie data from the movie db api service
+        /// This includes the title, overview, release date, and image data
         /// </summary>
         /// <param name="file">File path containing the movie name</param>
         /// <returns></returns>
@@ -123,6 +144,12 @@ namespace HomeVideo.Net.Indexing
             string title = FileUtility.FormatFileNameForSearch(Path.GetFileNameWithoutExtension(file));
 
             MovieData dataResponse = (MovieData) await _mdService.GetMovieByTitle(title);
+
+            // Get image bytes for poster, backdrop, and thumb
+            dataResponse.ImageBytes = await _mdService.GetMovieImage(dataResponse.PosterPath);
+            dataResponse.ThumbBytes = await _mdService.GetMovieThumb(dataResponse.PosterPath);
+            dataResponse.BackdropBytes = await _mdService.GetMovieImage(dataResponse.BackdropPath);
+
             //Get movie poster to store as byte array
             return dataResponse;
             /*

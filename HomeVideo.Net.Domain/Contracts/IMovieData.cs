@@ -22,5 +22,10 @@ namespace HomeVideo.Net.Domain.Contracts
         DateTime LastPlayed { get; set; }
         DateTime DateAdded { get; set; }
         string MetadataDescription { get; set; }
+        string PosterPath { get; set; }
+        string BackdropPath { get; set; }
+        byte[] ImageBytes { get; set; }
+        byte[] BackdropBytes { get; set; }
+        byte[] ThumbBytes { get; set; }
     }
 }

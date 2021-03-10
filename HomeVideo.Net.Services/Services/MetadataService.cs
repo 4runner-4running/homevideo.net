@@ -5,6 +5,7 @@ using MovieDB.Api;
 using MovieDB.Api.Domain;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,6 +44,28 @@ namespace HomeVideo.Net.Services.Services
             return ConvertApiToMovieData(dto);
         }
 
+        public async Task<byte[]> GetMovieImage(string path)
+        {
+            var imageStream = await _client.GetMovieImage(path);
+            using (MemoryStream ms = new MemoryStream())
+            {
+                imageStream.CopyTo(ms);
+                ms.Position = 0;
+                return ms.ToArray();
+            }
+        }
+
+        public async Task<byte[]> GetMovieThumb(string path)
+        {
+            var imageStream = await _client.GetMovieImage(path, true);
+            using (MemoryStream ms = new MemoryStream())
+            {
+                imageStream.CopyTo(ms);
+                ms.Position = 0;
+                return ms.ToArray();
+            }
+        }
+
         public async Task<ITvData> GetTvByTitle(string title)
         {
             throw new NotImplementedException();
@@ -61,7 +84,9 @@ namespace HomeVideo.Net.Services.Services
                 MovieDbId = dto.Id,
                 DisplayName = dto.Original_Title,
                 MetadataDescription = dto.Overview,
-                ReleaseDate = dto.Release_Date
+                ReleaseDate = dto.Release_Date,
+                PosterPath = dto.Poster_Path,
+                BackdropPath = dto.Backdrop_Path
             };
         }
 
@@ -90,7 +115,7 @@ namespace HomeVideo.Net.Services.Services
                     Id = Guid.NewGuid(),
                     MovieDbId = dtos[i].Id,
                     MetadataDescription = dtos[i].Overview,
-                    EpisodeCount = dtos[i].Episode_Count
+                    EpisodeCount = dtos[i].Episodes.Length
                 }; // TODO: need a GetEpisode endpoint on the api client
             }
 

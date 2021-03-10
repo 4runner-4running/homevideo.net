@@ -20,5 +20,10 @@ namespace HomeVideo.Net.Domain.DataObjects
         public DateTime LastPlayed {get;set;}
         public DateTime DateAdded {get;set;}
         public string MetadataDescription {get;set;}
+        public string PosterPath { get; set; }
+        public string BackdropPath { get; set; }
+        public byte[] ImageBytes { get; set; }
+        public byte[] BackdropBytes { get; set; }
+        public byte[] ThumbBytes { get; set; }
     }
 }

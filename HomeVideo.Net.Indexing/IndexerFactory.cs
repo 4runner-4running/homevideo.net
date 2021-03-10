@@ -1,5 +1,7 @@
 ﻿using HomeVideo.Net.Indexing.Contracts;
 using HomeVideo.Net.Logging.Contracts;
+using HomeVideo.Net.Services;
+using HomeVideo.Net.Services.Contracts;
 using System;
 using System.Collections.Concurrent;
 
@@ -14,12 +16,31 @@ namespace HomeVideo.Net.Indexing
         private ConcurrentDictionary<Guid, IIndexer> _indexCache;
 
         private ILogger _logger;
-        //private IStorageService _db;
+        private IDatabaseService _db;
 
-        public IndexerFactory(/*IStorageService db,*/ ILogger logger)
+        public IndexerFactory(IDatabaseService db, ILogger logger)
         {
             _logger = logger;
+            _db = db;
             _indexCache = new ConcurrentDictionary<Guid, IIndexer>();
         }
+
+        public IIndexer BuildIndexer()
+        {
+
+        }
+
+        public IIndexer GetIndexer(Guid id)
+        {
+            IIndexer indexer;
+            if (_indexCache.ContainsKey(id))
+            {
+                _indexCache.TryGetValue(id, out indexer);
+                return indexer;
+            }
+
+
+        }
+
     }
 }
