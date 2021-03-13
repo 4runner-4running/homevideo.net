@@ -7,18 +7,18 @@ namespace HomeVideo.Net.UnitTests
     [TestClass]
     public class IndexingTests
     {
-        [TestMethod]
-        public void MovieIndexer_GetFiles()
-        {
-            // Arrange
-            var logger = new LiteDBLogger();
-            var indexer = new MovieIndexer(logger, "test-movie-Index", @"L:\Movies");
+        //[TestMethod]
+        //public void MovieIndexer_GetFiles()
+        //{
+        //    // Arrange
+        //    var logger = new LiteDBLogger();
+        //    var indexer = new MovieIndexer(logger, "test-movie-Index", ;
 
-            // Act
-            var result = indexer.Index().GetAwaiter().GetResult();
+        //    // Act
+        //    var result = indexer.Index().GetAwaiter().GetResult();
 
-            // Assert
-            Assert.IsTrue(result.ResultCount > 0);
-        }
+        //    // Assert
+        //    Assert.IsTrue(result.ResultCount > 0);
+        //}
     }
 }

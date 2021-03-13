@@ -5,10 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.1.0" />
     <PackageReference Include="MovieDB.Api" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HomeVideo.Net.Database\HomeVideo.Net.Database.csproj" />
     <ProjectReference Include="..\HomeVideo.Net.Domain\HomeVideo.Net.Domain.csproj" />
     <ProjectReference Include="..\HomeVideo.Net.Logging\HomeVideo.Net.Logging.csproj" />
     <ProjectReference Include="..\HomeVideo.Net.Services\HomeVideo.Net.Services.csproj" />

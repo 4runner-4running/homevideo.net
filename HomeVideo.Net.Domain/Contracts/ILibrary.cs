@@ -10,7 +10,7 @@ namespace HomeVideo.Net.Domain.Contracts
     public interface ILibrary
     {
         Guid Id { get; set; }
-        LibraryType Type { get; set; }
+        LibraryType LibraryType { get; set; }
         string Name { get; set; }
         string RootPath { get; set; }
     }

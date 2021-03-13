@@ -1,9 +1,11 @@
-﻿using HomeVideo.Net.Indexing.Contracts;
+﻿using HomeVideo.Net.Domain.Enum;
+using HomeVideo.Net.Indexing.Contracts;
 using HomeVideo.Net.Logging.Contracts;
-using HomeVideo.Net.Services;
-using HomeVideo.Net.Services.Contracts;
 using System;
 using System.Collections.Concurrent;
+using HomeVideo.Net.Database.Contracts;
+using System.Collections.Generic;
+using HomeVideo.Net.Services.Contracts;
 
 namespace HomeVideo.Net.Indexing
 {
@@ -11,23 +13,34 @@ namespace HomeVideo.Net.Indexing
     /// Indexer Factory is responsible for managing indexers for various libraries
     /// Should indexers stay 'live' like this, or merely be config entries to spin up?
     /// </summary>
-    public class IndexerFactory
+    public class IndexerFactory : IIndexerFactory
     {
         private ConcurrentDictionary<Guid, IIndexer> _indexCache;
 
         private ILogger _logger;
-        private IDatabaseService _db;
+        private IDatabaseService _databaseService;
+        private IMetadataService _metadataService;
 
-        public IndexerFactory(IDatabaseService db, ILogger logger)
+        public IndexerFactory(IDatabaseService databaseService, IMetadataService metadataService, ILogger logger)
         {
             _logger = logger;
-            _db = db;
+            _databaseService = databaseService;
             _indexCache = new ConcurrentDictionary<Guid, IIndexer>();
         }
 
-        public IIndexer BuildIndexer()
+        public IIndexer BuildIndexer(string name, string path, LibraryType type)
         {
-
+            switch (type)
+            {
+                case LibraryType.Movies:
+                    return BuildMovieIndexerInternal(name, path);
+                    break;
+                case LibraryType.TV:
+                    throw new NotImplementedException();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         public IIndexer GetIndexer(Guid id)
@@ -39,8 +52,19 @@ namespace HomeVideo.Net.Indexing
                 return indexer;
             }
 
-
+            // Handle failure
+            _logger.WriteWarning($"Failed to load indexer: {id}");
+            return null; // Meh
         }
 
+        public IEnumerable<IIndexer> GetAllIndexers()
+        {
+            throw new NotImplementedException();
+        }
+
+        private MovieIndexer BuildMovieIndexerInternal(string libraryName, string path)
+        {
+            return new MovieIndexer(_logger, _metadataService, _databaseService, libraryName, path);
+        }
     }
 }

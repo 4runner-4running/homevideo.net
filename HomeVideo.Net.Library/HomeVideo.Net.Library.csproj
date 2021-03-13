@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HomeVideo.Net.Domain\HomeVideo.Net.Domain.csproj" />
+    <ProjectReference Include="..\HomeVideo.Net.Indexing\HomeVideo.Net.Indexing.csproj" />
+  </ItemGroup>
+
+</Project>

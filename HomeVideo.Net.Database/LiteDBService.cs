@@ -1,4 +1,4 @@
-﻿using HomeVideo.Net.Services.Contracts;
+﻿using HomeVideo.Net.Database.Contracts;
 using LiteDB;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HomeVideo.Net.Services
+namespace HomeVideo.Net.Database.Service
 {
     public class LiteDBService : IDatabaseService
     {

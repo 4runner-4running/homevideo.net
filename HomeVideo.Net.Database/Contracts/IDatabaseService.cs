@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HomeVideo.Net.Services.Contracts
+namespace HomeVideo.Net.Database.Contracts
 {
     public interface IDatabaseService
     {

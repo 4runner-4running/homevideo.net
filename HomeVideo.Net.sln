@@ -13,7 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeVideo.Net.Logging", "Ho
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeVideo.Net.Host", "HomeVideo.Net.Host\HomeVideo.Net.Host\HomeVideo.Net.Host.csproj", "{46E6E60C-E650-4508-8A4C-D47CAFFB6203}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeVideo.Net.UnitTests", "HomeVideo.Net.UnitTests\HomeVideo.Net.UnitTests.csproj", "{DACFADD9-B3CD-48A4-8C7B-588E3211E0AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeVideo.Net.UnitTests", "HomeVideo.Net.UnitTests\HomeVideo.Net.UnitTests.csproj", "{DACFADD9-B3CD-48A4-8C7B-588E3211E0AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeVideo.Net.Web", "HomeVideo.Net.Web\HomeVideo.Net.Web.csproj", "{A5D56EAA-931B-4DBB-8F1D-2A48A34B05A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeVideo.Net.Library", "HomeVideo.Net.Library\HomeVideo.Net.Library.csproj", "{5B4C0CE5-08F1-4A61-8818-51DC6C69766B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeVideo.Net.Database", "HomeVideo.Net.Database\HomeVideo.Net.Database.csproj", "{8FF491FE-C9BA-4A40-98B7-8D8DFE93EEA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +51,18 @@ Global
 		{DACFADD9-B3CD-48A4-8C7B-588E3211E0AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DACFADD9-B3CD-48A4-8C7B-588E3211E0AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DACFADD9-B3CD-48A4-8C7B-588E3211E0AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5D56EAA-931B-4DBB-8F1D-2A48A34B05A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5D56EAA-931B-4DBB-8F1D-2A48A34B05A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5D56EAA-931B-4DBB-8F1D-2A48A34B05A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5D56EAA-931B-4DBB-8F1D-2A48A34B05A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B4C0CE5-08F1-4A61-8818-51DC6C69766B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B4C0CE5-08F1-4A61-8818-51DC6C69766B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B4C0CE5-08F1-4A61-8818-51DC6C69766B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B4C0CE5-08F1-4A61-8818-51DC6C69766B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FF491FE-C9BA-4A40-98B7-8D8DFE93EEA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FF491FE-C9BA-4A40-98B7-8D8DFE93EEA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FF491FE-C9BA-4A40-98B7-8D8DFE93EEA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FF491FE-C9BA-4A40-98B7-8D8DFE93EEA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
-﻿using HomeVideo.Net.Domain.Contracts;
+﻿using HomeVideo.Net.Database.Contracts;
+using HomeVideo.Net.Domain.Contracts;
 using HomeVideo.Net.Domain.DataObjects;
 using HomeVideo.Net.Domain.Enum;
 using HomeVideo.Net.Indexing.Contracts;
