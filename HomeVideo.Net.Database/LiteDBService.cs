@@ -47,8 +47,13 @@ namespace HomeVideo.Net.Database.Service
             {
                 var collection = db.GetCollection<T>();
 
-                var results = collection.Find(searchPattern);
-                return results.ToList();
+                if (collection.Count() > 0)
+                {
+                    var results = collection.Find(searchPattern);
+                    return results.ToList();
+                }
+
+                return new List<T>();
             }
         }
 

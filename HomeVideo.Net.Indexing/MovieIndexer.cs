@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HomeVideo.Net.Indexing
@@ -50,7 +51,7 @@ namespace HomeVideo.Net.Indexing
         public async Task<IndexResult> Index()
         {
             DateTime start = DateTime.Now;
-            var movieDataList = new ConcurrentBag<MovieData>();//new List<MovieData>();
+            var movieDataList = new ConcurrentBag<MovieData>();
 
             // Search RootPath for files
             List<string> files = GetFilesList().ToList();
@@ -58,20 +59,23 @@ namespace HomeVideo.Net.Indexing
             // Iterate through and fetch metadata from 
             // How will the api react to this
             // Too many requests at once could end up with a throttle...
-            var result = Parallel.ForEach(files, new ParallelOptions { MaxDegreeOfParallelism = 8 }, async (file) =>
-             {
-                 var movieData = await FetchMetadata(file);
-                 movieDataList.Add(movieData);
-             });
+            await Task.Run(() =>
+            {
+                Parallel.ForEach(files, new ParallelOptions { MaxDegreeOfParallelism = 8 }, async (file) =>
+                {
+                    var movieData = await FetchMetadata(file);
+                    movieDataList.Add(movieData);
+                });
+            });
 
-
+#if !DEBUG
             foreach (var movie in movieDataList)
             {
                 _storageService.SaveEntry<MovieData>(movie, true);
             }
-
+#endif
             DateTime stop = DateTime.Now;
-
+            
             return new IndexResult()
             {
                 Duration = stop - start,
@@ -91,6 +95,8 @@ namespace HomeVideo.Net.Indexing
 
         // Fun chance to use queue and yield, taken from:
         // https://stackoverflow.com/questions/2106877/is-there-a-faster-way-than-this-to-find-all-the-files-in-a-directory-and-all-sub
+        // TODO: Potential bug - GetFilesList seems to be returning more items than exist in the given path.
+        //  Behavior indicates that it is returning all found items for each search pattern
         private IEnumerable<string> GetFilesList()
         {
             Queue<string> pending = new Queue<string>();
@@ -142,7 +148,7 @@ namespace HomeVideo.Net.Indexing
         /// <returns></returns>
         private async Task<MovieData> FetchMetadata(string file)
         {
-            string title = FileUtility.FormatFileNameForSearch(Path.GetFileNameWithoutExtension(file));
+            string title = FileUtility.FormatFileNameForSearch(file);
 
             MovieData dataResponse = (MovieData) await _mdService.GetMovieByTitle(title);
 

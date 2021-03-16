@@ -25,6 +25,7 @@ namespace HomeVideo.Net.Indexing
         {
             _logger = logger;
             _databaseService = databaseService;
+            _metadataService = metadataService;
             _indexCache = new ConcurrentDictionary<Guid, IIndexer>();
         }
 
@@ -34,10 +35,8 @@ namespace HomeVideo.Net.Indexing
             {
                 case LibraryType.Movies:
                     return BuildMovieIndexerInternal(name, path);
-                    break;
                 case LibraryType.TV:
                     throw new NotImplementedException();
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

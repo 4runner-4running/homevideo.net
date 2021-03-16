@@ -19,9 +19,9 @@ namespace HomeVideo.Net.Services.Services
     public class MetadataService : IMetadataService
     {
         MovieDBApi _client;
-        public MetadataService()
+        public MetadataService(string apiKey)
         {
-            _client = new MovieDBApi(""); //ToDo: where will the key info be located? need a storage service for config data
+            _client = new MovieDBApi(apiKey); //ToDo: where will the key info be located? need a storage service for config data
         }
 
         public async Task<IMovieData> GetMovieByTitle(string title)

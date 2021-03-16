@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\HomeVideo.Net.Domain\HomeVideo.Net.Domain.csproj" />
     <ProjectReference Include="..\HomeVideo.Net.Indexing\HomeVideo.Net.Indexing.csproj" />
   </ItemGroup>

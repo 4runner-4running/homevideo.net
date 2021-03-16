@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace HomeVideo.Net.Domain.DataObjects
 {
-    public class MovieData : IMovieData
+    public class MovieData : IMovieData, IMedia
     {
         public Guid Id { get; set; }
         public int MovieDbId { get; set; }
         public DateTime ReleaseDate { get; set; }
         public string DisplayName { get; set; }
         public string FileName {get;set;}
+        public string Extension { get; set; }
         public string Path {get;set;}
         public long ContentLength {get;set;}
         public bool Played {get;set;}

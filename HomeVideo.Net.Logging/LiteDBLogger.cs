@@ -11,6 +11,16 @@ namespace HomeVideo.Net.Logging
         public LiteDBLogger()
         {
         }
+
+        /// <summary>
+        /// Use if you desire to store logs in a specific location
+        /// </summary>
+        /// <param name="databaseOverride"></param>
+        public LiteDBLogger(string databaseOverride)
+        {
+            _databaseConnection = databaseOverride;
+        }
+
         public void WriteError(string messge, Exception ex)
         {
             throw new NotImplementedException();

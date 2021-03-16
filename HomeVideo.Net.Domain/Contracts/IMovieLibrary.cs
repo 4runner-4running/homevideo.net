@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace HomeVideo.Net.Domain.Contracts
 {
-    public interface ITvData : IMedia
+    public interface IMovieLibrary : ILibrary
     {
-        int TotalSeasons { get; set; }
-        int TotalEpisodes { get; set; }
-        List<ISeasonData> Seasons { get; set; }
+        List<IMovieData> LibraryItems { get; set; }
     }
 }
