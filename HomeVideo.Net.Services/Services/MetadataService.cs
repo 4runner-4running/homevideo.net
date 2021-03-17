@@ -31,7 +31,9 @@ namespace HomeVideo.Net.Services.Services
             if (searchResult.Results.Count > 0 && searchResult.Results.First() != null)
             {
                 var dto = await _client.GetMovie(searchResult.Results.First().Id);
-                // Consider if search doesn't match- it will pull bad data
+            // Consider if search doesn't match- it will pull bad data
+            // Look into 'fuzzy matching' ex: https://stackoverflow.com/a/41238939
+            // Might be overkill, given the unlikelihood of > 100 results..
                 return ConvertApiToMovieData(dto);
             }
 

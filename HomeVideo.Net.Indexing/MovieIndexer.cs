@@ -54,7 +54,7 @@ namespace HomeVideo.Net.Indexing
             var movieDataList = new ConcurrentBag<MovieData>();
 
             // Search RootPath for files
-            List<string> files = GetFilesList().ToList();
+            List<string> files = GetFilesList();
 
             // Iterate through and fetch metadata from 
             // How will the api react to this
@@ -93,40 +93,24 @@ namespace HomeVideo.Net.Indexing
              */
         }
 
-        // Fun chance to use queue and yield, taken from:
-        // https://stackoverflow.com/questions/2106877/is-there-a-faster-way-than-this-to-find-all-the-files-in-a-directory-and-all-sub
-        // TODO: Potential bug - GetFilesList seems to be returning more items than exist in the given path.
-        //  Behavior indicates that it is returning all found items for each search pattern
-        private IEnumerable<string> GetFilesList()
+        private List<string> GetFilesList()
         {
-            Queue<string> pending = new Queue<string>();
-            var patterns = _searchPattern.Split("|");
-            foreach (var pattern in patterns)
+            var temp = new List<string>();
+
+            try
             {
-                pending.Enqueue(pattern);
+                temp.AddRange(Directory.EnumerateFiles(RootPath, "*", SearchOption.AllDirectories)
+                                .Where(f => f.EndsWith(".mp4", StringComparison.OrdinalIgnoreCase) ||
+                                        f.EndsWith(".mkv", StringComparison.OrdinalIgnoreCase) ||
+                                        f.EndsWith(".avi", StringComparison.OrdinalIgnoreCase)));
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.WriteError(ex.Message, ex);
+                return temp;
             }
 
-            List<string> temp = new List<string>();
-
-            while (pending.Count > 0)
-            {
-                var pattern = pending.Dequeue();
-
-                try
-                {
-                    temp.AddRange(Directory.GetFiles(RootPath, pattern, SearchOption.AllDirectories));
-                }
-                catch (UnauthorizedAccessException ex)
-                {
-                    _logger.WriteError($"", ex);
-                    continue;
-                }
-
-                for (var i = 0; i < temp.Count; i++)
-                {
-                    yield return temp[i];
-                }
-            }
+            return temp;
         }
 
         /*
