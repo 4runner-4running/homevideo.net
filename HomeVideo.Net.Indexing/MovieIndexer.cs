@@ -136,6 +136,9 @@ namespace HomeVideo.Net.Indexing
 
             MovieData dataResponse = (MovieData) await _mdService.GetMovieByTitle(title);
 
+            // Set path
+            dataResponse.Path = file;
+
             // Get image bytes for poster, backdrop, and thumb
             dataResponse.ImageBytes = await _mdService.GetMovieImage(dataResponse.PosterPath);
             dataResponse.ThumbBytes = await _mdService.GetMovieThumb(dataResponse.PosterPath);
