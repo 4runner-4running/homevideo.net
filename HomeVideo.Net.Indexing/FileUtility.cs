@@ -14,14 +14,16 @@ namespace HomeVideo.Net.Indexing
             // Parse out potential issues (dashes, dots, underscores, etc.)
             // Consider more advanced handling if this proved insufficient
 
-            var dir = Path.GetDirectoryName(inputFile);
+            //var dir = Path.GetDirectoryName(inputFile);
             var fileName = Path.GetFileNameWithoutExtension(inputFile);
 
             // Folder/File naming should be consistent. if file does not match folder, work off folder instead
-            if (fileName.ToLower() != dir.ToLower())
-                return dir.Replace('.', ' ').Replace('_', ' ').Replace('-', ' ');
-            else
-                return fileName.Replace('.', ' ').Replace('_', ' ').Replace('-', ' ');
+            //TODO: This will cause an issue in the event of a folder being a collection (i.e. "Alien Trilogy")
+            //if (fileName.ToLower() != dir.ToLower())
+            //    return dir.Replace('.', ' ').Replace('_', ' ').Replace('-', ' ');
+            //else
+
+            return fileName.Replace('.', ' ').Replace('_', ' ').Replace('-', ' ');
         }
     }
 }

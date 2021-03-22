@@ -16,11 +16,11 @@ namespace HomeVideo.Net.Database.Service
         {
             _connectionString = connectionString;
         }
-        public bool SaveEntry<T>(T entry, bool overwrite = false)
+        public bool SaveEntry<T>(T entry, string collectionName = null, bool overwrite = false)
         {
             using (var db = new LiteDatabase(_connectionString))
             {
-                ILiteCollection<T> collection = db.GetCollection<T>();
+                ILiteCollection<T> collection = String.IsNullOrEmpty(collectionName) ? db.GetCollection<T>() : db.GetCollection<T>(collectionName);
 
                 if (overwrite)
                     return collection.Upsert(entry);
@@ -32,24 +32,24 @@ namespace HomeVideo.Net.Database.Service
             }
         }
 
-        public T GetEntry<T>(Guid id)
+        public T GetEntry<T>(Guid id, string collectionName = null)
         {
             using (var db = new LiteDatabase(_connectionString))
             {
-                var collection = db.GetCollection<T>();
+                var collection = String.IsNullOrEmpty(collectionName) ? db.GetCollection<T>() : db.GetCollection<T>(collectionName);
                 return collection.FindById(id);
             }
         }
 
-        public List<T> GetEntries<T>(string searchPattern)
+        public List<T> GetEntries<T>(string field, string value, string collectionName = null)
         {
             using (var db = new LiteDatabase(_connectionString))
             {
-                var collection = db.GetCollection<T>();
+                var collection = String.IsNullOrEmpty(collectionName) ? db.GetCollection<T>() : db.GetCollection<T>(collectionName);
 
                 if (collection.Count() > 0)
                 {
-                    var results = collection.Find(searchPattern);
+                    var results = collection.Find(Query.Contains(field, value));
                     return results.ToList();
                 }
 
@@ -57,11 +57,21 @@ namespace HomeVideo.Net.Database.Service
             }
         }
 
-        public bool DeleteEntry<T>(Guid id)
+        public List<T> GetAllEntries<T>(string collectionName = null)
         {
             using (var db = new LiteDatabase(_connectionString))
             {
-                var collection = db.GetCollection<T>();
+                var collection = string.IsNullOrEmpty(collectionName) ? db.GetCollection<T>() : db.GetCollection<T>(collectionName);
+
+                return collection.FindAll().ToList();
+            }
+        }
+
+        public bool DeleteEntry<T>(Guid id, string collectionName = null)
+        {
+            using (var db = new LiteDatabase(_connectionString))
+            {
+                var collection = String.IsNullOrEmpty(collectionName) ? db.GetCollection<T>() : db.GetCollection<T>(collectionName);
 
                 return collection.Delete(id);
             }

@@ -28,7 +28,6 @@ namespace HomeVideo.Net.Indexing.IOC
         {
             builder.RegisterType<IndexerFactory>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<IndexingService>().AsImplementedInterfaces().SingleInstance();
-            //builder.RegisterType<MovieIndexer>().AsImplementedInterfaces(); // May not need
 
             base.Load(builder);
         }

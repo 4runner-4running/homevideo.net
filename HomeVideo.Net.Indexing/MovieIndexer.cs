@@ -25,7 +25,7 @@ namespace HomeVideo.Net.Indexing
         public LibraryType Type { get; set; }
         public string RootPath { get; set; }
 
-        //private IStorageService _db { get; set; }
+        private string _collectionKey { get { return LibraryName.ToLower().Replace(' ', '_') + Id.ToString(); } }
         private ILogger _logger;
         private IMetadataService _mdService;
         private IDatabaseService _storageService;
@@ -35,7 +35,7 @@ namespace HomeVideo.Net.Indexing
         /// <param name="name">The library name of the indexer</param>
         /// <param name="path">The root file path for the indexer to search</param>
         /// <param name="id"></param>
-        public MovieIndexer(ILogger logger, IMetadataService metadataService, IDatabaseService dbService, string name, string path, Guid id = new Guid()) //IStorageService db
+        public MovieIndexer(ILogger logger, IMetadataService metadataService, IDatabaseService dbService, string name, string path, Guid id = new Guid())
         {
             Id = id != Guid.Empty ? id : Guid.NewGuid();
 
@@ -68,10 +68,10 @@ namespace HomeVideo.Net.Indexing
                 });
             });
 
-#if !DEBUG
+#if DEBUG
             foreach (var movie in movieDataList)
             {
-                _storageService.SaveEntry<MovieData>(movie, true);
+                _storageService.SaveEntry<MovieData>(movie,_collectionKey, true);
             }
 #endif
             DateTime stop = DateTime.Now;
