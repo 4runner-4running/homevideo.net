@@ -37,7 +37,7 @@ namespace HomeVideo.Net.Library
 
         public void LoadLibrariesIntoCache()
         {
-            List<ILibrary> libraries = _databaseService.GetEntries<ILibrary>("library_*");
+            List<ILibrary> libraries = _databaseService.GetAllEntries<ILibrary>();
 
             foreach(var library in libraries)
             {
@@ -55,6 +55,10 @@ namespace HomeVideo.Net.Library
             ILibrary library;
             var success = _libraryCache.TryGetValue(id, out library);
             //TODO: consider null case
+
+            if (!success)
+                library = _databaseService.GetEntry<ILibrary>(id);
+
             return library;
         }
 
@@ -77,6 +81,7 @@ namespace HomeVideo.Net.Library
             // Add to cache
             // Don't really worry about the fail case for now, in this limited use case, there's not really a reason/way that we would duplicate library entries, short of GUID duplication...
             _libraryCache.TryAdd(library.Id, library);
+            _databaseService.SaveEntry<ILibrary>(library);
 
             return library;
         }

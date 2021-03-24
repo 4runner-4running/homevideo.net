@@ -5,6 +5,7 @@ using HomeVideo.Net.Indexing;
 using HomeVideo.Net.Indexing.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HomeVideo.Net.Library
@@ -30,6 +31,11 @@ namespace HomeVideo.Net.Library
         public async Task<IIndexResult> PerformIndex()
         {
             return await Indexer.Index();
+        }
+
+        public void SetLibraryItems(List<IMovieData> items)
+        {
+            LibraryItems = items;
         }
     }
 }

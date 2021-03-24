@@ -10,11 +10,13 @@ namespace HomeVideo.Net.Database.Service
 {
     public class LiteDBService : IDatabaseService
     {
-        private string _connectionString = "";
+        private ConnectionString _connectionString;
 
         public LiteDBService(string connectionString)
         {
-            _connectionString = connectionString;
+            _connectionString = new ConnectionString();
+            _connectionString.Filename = connectionString;
+            _connectionString.Upgrade = true;
         }
         public bool SaveEntry<T>(T entry, string collectionName = null, bool overwrite = false)
         {
