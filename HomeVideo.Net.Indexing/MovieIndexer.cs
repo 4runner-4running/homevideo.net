@@ -25,7 +25,7 @@ namespace HomeVideo.Net.Indexing
         public LibraryType Type { get; set; }
         public string RootPath { get; set; }
 
-        private string _collectionKey { get { return LibraryName.ToLower().Replace(' ', '_') + Id.ToString(); } }
+        private string _collectionKey { get { return LibraryName.ToLower().Replace(' ', '_') + "__" + Id.ToString().Split('-')[0]; } }
         private ILogger _logger;
         private IMetadataService _mdService;
         private IDatabaseService _storageService;
@@ -48,7 +48,12 @@ namespace HomeVideo.Net.Indexing
             _storageService = dbService;
         }
 
-        public async Task<IndexResult> Index()
+        public MovieIndexer()
+        {
+
+        }
+
+        public async Task<MovieIndexResult> Index()
         {
             DateTime start = DateTime.Now;
             var movieDataList = new ConcurrentBag<MovieData>();
@@ -59,16 +64,14 @@ namespace HomeVideo.Net.Indexing
             // Iterate through and fetch metadata from 
             // How will the api react to this
             // Too many requests at once could end up with a throttle...
-            await Task.Run(() =>
+
+            await ForEachAsync<string, MovieData>(files, FetchMetadata, (movieData) =>
             {
-                Parallel.ForEach(files, new ParallelOptions { MaxDegreeOfParallelism = 8 }, async (file) =>
-                {
-                    var movieData = await FetchMetadata(file);
-                    movieDataList.Add(movieData);
-                });
+                movieDataList.Add(movieData);
+                _storageService.SaveEntry<MovieData>(movieData, _collectionKey, true);
             });
 
-#if DEBUG
+#if !DEBUG
             foreach (var movie in movieDataList)
             {
                 _storageService.SaveEntry<MovieData>(movie,_collectionKey, true);
@@ -76,11 +79,12 @@ namespace HomeVideo.Net.Indexing
 #endif
             DateTime stop = DateTime.Now;
             
-            return new IndexResult()
+            return new MovieIndexResult()
             {
                 Duration = stop - start,
                 ResultCount = files.Count,
                 Success = true,
+                Items = movieDataList.ToList(),
                 Messages = new List<string>()
             };
 
@@ -138,7 +142,7 @@ namespace HomeVideo.Net.Indexing
 
             // Set path
             dataResponse.Path = file;
-
+            dataResponse.DateAdded = DateTime.Now;
             // Get image bytes for poster, backdrop, and thumb
             dataResponse.ImageBytes = await _mdService.GetMovieImage(dataResponse.PosterPath);
             dataResponse.ThumbBytes = await _mdService.GetMovieThumb(dataResponse.PosterPath);
@@ -146,13 +150,33 @@ namespace HomeVideo.Net.Indexing
 
             //Get movie poster to store as byte array
             return dataResponse;
-            /*
-             *  Id = Guid.NewGuid(),
-                MovieDbId = dto.Id,
-                DisplayName = dto.Original_Title,
-                MetadataDescription = dto.Overview,
-                ReleaseDate = dto.Release_Date
-             */
+        }
+
+        // TODO: Found this info on dealing with throttled parallel.
+        // De-genericizing for now, but obviously when the time comes to do tv as well, it can be extracted into a utility and used by both.
+        private async Task ForEachAsync<TSource, TResult>(
+            IEnumerable<TSource> source, Func<TSource, Task<TResult>> taskSelector, Action<TResult> resultProcessor)
+        {
+            var throttle = new SemaphoreSlim(initialCount: 1, maxCount: 4);
+
+           await Task.WhenAll(from item in source
+                                select ProcessAsync(item, taskSelector, resultProcessor, throttle));
+        }
+
+        private async Task ProcessAsync<TSource, TResult>(TSource item, Func<TSource, Task<TResult>> taskSelector,
+                                        Action<TResult> resultProcessor, SemaphoreSlim throttle)
+        {
+            TResult result = await taskSelector(item);
+
+            await throttle.WaitAsync();
+            try
+            {
+                resultProcessor(result);
+            }
+            finally
+            {
+                throttle.Release();
+            }
         }
     }
 }

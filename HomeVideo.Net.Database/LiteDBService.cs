@@ -11,7 +11,12 @@ namespace HomeVideo.Net.Database.Service
     public class LiteDBService : IDatabaseService
     {
         private ConnectionString _connectionString;
-
+        //TODO:
+        /*
+         * Refactor/ Reimplement a bit.
+         *  Revise search/retrieval method
+         *  Look into LiteDB docs as well
+         */
         public LiteDBService(string connectionString)
         {
             _connectionString = new ConnectionString();
@@ -29,6 +34,7 @@ namespace HomeVideo.Net.Database.Service
                 else
                 {
                     var insert = collection.Insert(entry);
+
                     return !insert.IsNull;
                 }
             }
@@ -76,6 +82,22 @@ namespace HomeVideo.Net.Database.Service
                 var collection = String.IsNullOrEmpty(collectionName) ? db.GetCollection<T>() : db.GetCollection<T>(collectionName);
 
                 return collection.Delete(id);
+            }
+        }
+
+        public void CreateIndexes<T>(string collectionName, string[] fields)
+        {
+            using (var db = new LiteDatabase(_connectionString))
+            {
+                var collection = String.IsNullOrEmpty(collectionName) ? db.GetCollection<T>() : db.GetCollection<T>(collectionName);
+
+                if (fields.Length > 0)
+                {
+                    for (var i = 0; i < fields.Length; i++)
+                    {
+                        collection.EnsureIndex(fields[i]);
+                    }
+                }
             }
         }
     }

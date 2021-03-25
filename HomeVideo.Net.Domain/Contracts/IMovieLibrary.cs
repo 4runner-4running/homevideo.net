@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HomeVideo.Net.Domain.DataObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace HomeVideo.Net.Domain.Contracts
 {
     public interface IMovieLibrary : ILibrary
     {
-        List<IMovieData> LibraryItems { get; set; }
+        List<MovieData> LibraryItems { get; set; }
     }
 }

@@ -45,7 +45,7 @@ namespace HomeVideo.Net.UnitTests
 
             // Act
             var result = db.SaveEntry<IMovieData>(entry);
-
+            //db.CreateIndexes<IMovieData>(null, new string[] { "Id" });
             var record = (MovieData)db.GetEntry<IMovieData>(id);
 
             // Assert

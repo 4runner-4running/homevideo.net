@@ -13,5 +13,7 @@ namespace HomeVideo.Net.Database.Contracts
         List<T> GetEntries<T>(string field, string value, string collectionName = null);
         List<T> GetAllEntries<T>(string collectionName = null);
         bool DeleteEntry<T>(Guid id, string collectionName = null);
+
+        void CreateIndexes<T>(string collectionName, string[] fields);
     }
 }

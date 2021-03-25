@@ -3,6 +3,7 @@ using Autofac.Core;
 using HomeVideo.Net.Database.Contracts;
 using HomeVideo.Net.Database.Service;
 using HomeVideo.Net.Indexing.Contracts;
+using HomeVideo.Net.Indexing.Domain;
 using HomeVideo.Net.Indexing.IOC;
 using HomeVideo.Net.Library.Contracts;
 using HomeVideo.Net.Library.IOC;
@@ -52,8 +53,8 @@ namespace HomeVideo.Net.Host
              */
 
             // Rough Draft Test
-            string connectionString = @"J:\git\homevideo.net\test-data.db"; // TODO: use app.config / ConfigurationManager to store/retrieve these settings
-            string apiKey = ""; 
+            string connectionString = @"J:\git\homevideo.net\test-data.db4"; // TODO: use app.config / ConfigurationManager to store/retrieve these settings
+            string apiKey = "01440bbed273601848b2bcebe48cc465"; 
 
             // Load specific base instances
             IDatabaseService dbInstance = new LiteDBService(connectionString);
@@ -76,14 +77,14 @@ namespace HomeVideo.Net.Host
 
             var libraryService = _container.Resolve<ILibraryService>();
 
-            var lib = libraryService.NewLibrary("test", @"L:\Movies", Domain.Enum.LibraryType.Movies);
+            var lib = libraryService.NewLibrary("test", @"J:\git\test-movies", Domain.Enum.LibraryType.Movies);
 
             Console.WriteLine($"lib.id: {lib.Id}");
 
             Console.WriteLine($"Attemping library index...");
             var result = libraryService.IndexLibrary(lib.Id).GetAwaiter().GetResult();
 
-            Console.WriteLine($"{result.Success}. {result.ResultCount}");
+            Console.WriteLine($"{result.Success}. Result Files: {result.ResultCount}. Files Count: {((MovieIndexResult)result).Items}");
 
             Console.ReadKey();
         }

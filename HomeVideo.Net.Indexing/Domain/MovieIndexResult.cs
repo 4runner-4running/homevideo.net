@@ -1,4 +1,5 @@
 ﻿using HomeVideo.Net.Domain.Contracts;
+using HomeVideo.Net.Domain.DataObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace HomeVideo.Net.Indexing.Domain
 {
-    public class IndexResult : IIndexResult
+    public class MovieIndexResult : IIndexResult
     {
         public bool Success { get; set; }
         public List<string> Messages { get; set; }
         public int ResultCount { get; set; }
+        public List<MovieData> Items { get; set; }
         public TimeSpan Duration { get; set; }
     }
 }

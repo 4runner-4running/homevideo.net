@@ -16,7 +16,7 @@ namespace HomeVideo.Net.Indexing.Contracts
         Guid Id { get; }
         string LibraryName { get; set; }
         LibraryType Type { get; set; }
-        Task<IndexResult> Index();
+        Task<MovieIndexResult> Index();
 
     }
 }
