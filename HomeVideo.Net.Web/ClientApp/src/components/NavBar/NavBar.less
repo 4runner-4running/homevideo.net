@@ -1,0 +1,145 @@
+@import '../../styles.less';
+
+.navbar {
+    background-color: @primaryColor;
+    height: 4em;
+    min-height: 4em;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
+  
+  .menu-bars {
+    margin-left: 1rem;
+    margin-top: .25rem;
+    margin-bottom: .25rem;
+    font-size: 1.5rem;
+    background: none;
+    fill: @secondaryBackground;
+  }
+  
+  .nav-menu {
+    background-color: @primaryBackground;
+    width: 12em;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    transition: 850ms;
+  }
+  
+  .nav-menu.active {
+    left: 0;
+    height: 90vh;
+    padding-top:4em;
+    transition: 350ms;
+  }
+  
+  .nav-text {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 8px 0px 8px 0px;
+    list-style: none;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .nav-text a {
+    text-decoration: none;
+    color: #f5f5f5;
+    font-size: 18px;
+    width: 95%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    border-radius: 4px;
+  }
+  
+  .nav-text a:hover {
+    background-color: @secondaryColor;
+  }
+  
+  .nav-menu-items {
+    width: 100%;
+    padding-inline-start: 0;
+  }
+  
+  .navbar-toggle {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
+
+  .navbar-toggle:hover{
+    background-color: @secondaryColor;
+  }
+  
+  span {
+    margin-left: 16px;
+  }
+
+
+  /* Animated Menu Burgers - Yummy */
+.menu-btn {
+  z-index: 9001;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3em;
+  height: 3em; //todo: move away from px
+  cursor: pointer;
+  transition: all .5s ease-in-out;
+}
+
+.menu-btn-burger {
+  width: 2em;
+  height: .2em;
+  background: @primaryColor;
+  border-radius: .10em;
+  box-shadow: 0 2px 5px @colorHighlight;
+  transition: all .5s ease-in-out;
+}
+
+.menu-btn-burger::before,
+.menu-btn-burger::after {
+  content: '';
+  position: absolute;
+  width: 2em;
+  height: .2em;
+  background: @primaryColor;
+  border-radius: .10em;
+  box-shadow: 0 2px 5px @colorHighlight;
+  transition: all .5s ease-in-out;
+}
+
+.menu-btn-burger::before {
+  transform: translateY(16px);
+}
+
+.menu-btn-burger::after {
+  transform:  translateY(-16px);
+}
+
+/* Animation Time, yo */
+.menu-btn.open .menu-btn-burger {
+  transform: translateX(50px);
+  background: transparent;
+  box-shadow: none;
+}
+
+.menu-btn.open .menu-btn-burger::before {
+  transform: rotate(-45deg) translate(35px, 35px);
+  background: @secondaryColor;
+}
+
+.menu-btn.open .menu-btn-burger::after{
+  transform: rotate(45deg) translate(35px, -35px);
+  background: @secondaryColor;
+}
